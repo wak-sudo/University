@@ -1,0 +1,1 @@
+libraryDependencies +="com.restfb" % "restfb" % "2024.3.0"
