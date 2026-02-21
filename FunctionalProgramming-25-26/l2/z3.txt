@@ -1,0 +1,11 @@
+let rec sufixes lst =
+    match lst with
+    | [] -> [[]]
+    | x :: xs -> lst :: (sufixes xs)
+
+let rec prefixes lst =
+    match lst with
+    | [] -> [[]]
+    | x :: xs ->
+        if xs = [] then [[x]] else
+        [x] :: (List.map (fun el -> x :: el) (prefixes xs))

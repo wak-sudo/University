@@ -1,0 +1,28 @@
+let for_all pred xs =
+    let f_cps _ x g = 
+        if pred x then g true
+        else false
+    in
+    fold_left_cps f_cps true xs (fun x -> x) 
+
+
+let mult_list xs =
+    if xs = [] then 0 else
+    let f_cps acc x g =
+        if x = 0 then 0
+        else g (x * acc)
+    in 
+    fold_left_cps f_cps 1 xs (fun x -> x) 
+
+
+let sorted (xs : int list) = 
+    match xs with
+    | [] -> true
+    | [x] -> true
+    | x :: xs -> 
+        let f_cps acc x g =
+            if acc > x then false
+            else g x
+        in 
+        fold_left_cps f_cps x xs (fun x -> true)
+        (*/ doszedł do końca wszystko posortowane /*)

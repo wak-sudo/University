@@ -1,0 +1,32 @@
+type 'a leftistTree = 
+    | Empty
+    | Node of ('a leftistTree) * 'a * ('a leftistTree) * int
+
+let rank t = match t with  
+  | Empty -> 0
+  | Node (_,_,_,r) -> r
+
+let rec merge t1 t2 =
+    match t1, t2 with
+    | Empty, t | t, Empty -> t  
+    | Node (l, k1, r, _), Node(_, k2, _, _) ->
+    if k1 > k2 then (merge t2 t1) else
+        let merged = (merge r t2) in
+        let rank_left = rank l in
+        let rank_right = rank merged in
+            if rank_left >= rank_right then Node (l, k1, merged, rank_right+1)
+            else Node (merged, k1, l, rank_left+1) 
+    
+let insert x t = merge (Node (Empty, x, Empty, 1)) t
+
+let leftistTree l k r = Node (l, k, r, (rank r) + 1)
+
+let get_min t = match t with  
+  | Empty -> failwith "empty"
+  | Node (_, k, _, _) -> k
+
+let delete_min t = match t with
+  | Empty -> failwith "empty"
+  | Node (l, _, r, _) -> merge l r
+
+let add t x = if t = Empty then failwith "empty" else merge t (Node (Empty, x, Empty, 1)) ;;

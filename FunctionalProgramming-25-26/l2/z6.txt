@@ -1,0 +1,24 @@
+let listWithoutIthElement s idx =
+  let rec helper s acc idx =
+    match s with
+    | [] -> failwith "Index out of bounds"
+    | x :: xs ->
+        if idx = 0 then (List.rev acc) @ xs
+        else helper xs (x :: acc) (idx - 1)
+  in
+  helper s [] idx
+
+let rec permutations s =
+  match s with
+  | [] -> [[]]
+  | _ ->
+      let rec helper sh idx =
+        match sh with
+        | [] -> []
+        | x :: xs ->
+            let rest = listWithoutIthElement s idx in
+            let sub_perms = permutations rest in
+            let with_x = List.map (fun p -> x :: p) sub_perms in
+            with_x @ helper xs (idx + 1)
+      in
+      helper s 0

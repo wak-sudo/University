@@ -1,0 +1,28 @@
+string_of_formula (
+  IMPLIES (
+    IMPLIES (VAR "p", IMPLIES (VAR "q", VAR "r")),
+    IMPLIES (
+      IMPLIES (VAR "p", VAR "q"),
+      IMPLIES (VAR "p", VAR "r")
+    )
+  )
+) ;;
+
+let th1 = imp_i (VAR "p") (by_assumption (VAR "p")) 
+let th2 = imp_i (VAR "p") (imp_i (VAR "q") (by_assumption (VAR "p"))) 
+
+let a1 = by_assumption (IMPLIES (VAR "p", (IMPLIES (VAR "q", VAR "r"))))
+let a2 = by_assumption (IMPLIES (VAR "p", VAR "q"))
+let a3 = by_assumption (VAR "p")
+
+let thA = imp_e (imp_e a1 a3) (imp_e a2 a3)
+
+let thB = imp_i (VAR "p") thA
+let thC = imp_i (IMPLIES (VAR "p", VAR "q")) thB
+let thD = imp_i (IMPLIES (VAR "p", IMPLIES (VAR "q", VAR "r"))) thC
+
+let th4 = imp_i FALSE (bot_e (VAR "p") (by_assumption FALSE))
+          
+
+
+ 

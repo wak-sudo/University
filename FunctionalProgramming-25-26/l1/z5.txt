@@ -1,0 +1,3 @@
+let rec tabulate (s: int -> 'a) ?(x = 0) y =
+   if (x > y) then []
+   else (s x) :: (tabulate s ~x:(x+1) y)

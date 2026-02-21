@@ -1,0 +1,11 @@
+# check this
+
+let scan (f: 'a -> 'b -> 'a) (a : 'a) (s : int -> 'b) =
+    let rec sCreator x =
+    if x == 0 then f a (s 0)
+    else f (sCreator x-1) (s x) 
+in sCreator ;;
+
+(f a (s 0))
+(f (f a (s 0)) (s 1))
+(f (f (f a (s 0)) (s 1)) (s 2))

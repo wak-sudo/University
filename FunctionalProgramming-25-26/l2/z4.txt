@@ -1,0 +1,33 @@
+let rec merge s1 s2 =
+  match s1, s2 with
+  | [], l | l, [] -> l
+  | x :: xs, y :: ys ->
+      if x <= y then x :: merge xs (y :: ys)
+      else y :: merge (x :: xs) ys
+
+(* tail rec *)
+
+let rec merge s1 s2 =
+    let rec helper s1 s2 acc =
+      match s1, s2 with
+      | [], l | l, [] -> List.rev_append acc l
+      | x :: xs, y :: ys ->
+          if x <= y then (helper xs s2 (x :: acc))
+          else (helper s1 ys (y :: acc))
+    in helper s1 s2 []
+
+let halve lst =
+    let rec helper slow fast acc =
+        match fast with
+        | [] | [_] -> (acc, slow)
+        | _ :: _ :: fs ->
+            helper (List.tl slow) (List.tl (List.tl fast)) (List.hd slow :: acc)
+    in
+    match lst with
+    | [] -> ([], [])
+    | _ -> helper lst lst []
+
+let rec mergesort lst =
+    match (halve lst) with
+    | ([], l) | (l, []) -> l 
+    | (l, r) -> merge (mergesort l) (mergesort r)

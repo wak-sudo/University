@@ -1,0 +1,76 @@
+type ('a, 'b) format = (string -> 'b) -> 'a
+
+let lit (s : string) : ('a, 'a) format =
+    fun k -> fun acc -> k (acc ^ s) 
+
+
+== zad. 1 ==
+
+type ('a, 'b) format = (string -> 'b) -> string -> 'a
+
+    (*/ (string -> ’a) -> string -> int -> ’a /*)
+
+let int : (int -> 'a, 'a) format = 
+    fun (k : string -> 'a) (acc : string) (n : int) -> k (acc ^ string_of_int n)
+
+    (*/ (string -> ’a) -> string -> string -> 'a /*)
+
+let str : (string -> 'a, 'a) format =
+    fun (k : string -> 'a) (acc : string) (s : string) -> k (acc ^ s)
+
+    (*/ (string -> 'a) -> string -> 'a /*)
+
+let lit (s : string) : ('a, 'a) format  =
+    fun (k : string -> 'a) (acc : string) -> k (acc ^ s)
+
+let (^^) (f : ('a, 'b) format) (g : ('b, 'c) format) : ('a, 'c) format =
+    fun (k : string -> 'c) (acc : string) -> f (fun acc2 -> g k acc2) acc 
+
+    (*/ (string -> string) -> string -> 'a /*)
+
+let sprintf (fmt : ('a, string) format) : 'a =
+    fmt (fun x -> x) ""
+
+== zad. 2 == 
+
+type (_, _) format =
+    | Lit : string -> ('a, 'a) format
+    | Int : (int -> 'a, 'a) format
+    | Str: (string -> 'a, 'a) format
+    | Cat : ('a, 'b) format * ('b, 'c) format -> ('a, 'c) format
+
+let rec ksprintf : type a b. (a, b) format -> (string -> b) -> a =
+    fun fmt k ->
+        match fmt with
+        | Lit txt -> (k txt)
+        | Int -> (fun n -> k (string_of_int n))
+        | Str -> (fun s -> k s)
+        | Cat (f1, f2) -> 
+            ksprintf f1 (fun s1 -> 
+            ksprintf f2 (fun s2 -> 
+            k (s1 ^ s2)))
+
+let sprintf fmt =
+  ksprintf fmt (fun s -> s)
+
+(*/ aliasy */)
+let lit s = Lit s
+let int = Int
+let str = Str
+let (^^) f1 f2 = Cat (f1, f2)
+
+let myFmt = lit "Ala ma " ^^ int ^^ lit " kot" ^^ str ^^ lit "."
+
+let rec kprintf: type a b. (a, b) format -> b -> a =
+    fun fmt ret ->
+        match fmt with
+        | Lit s -> print_string s; ret
+        | Int -> (fun n -> print_string (string_of_int n); ret)
+        | Str -> (fun s -> print_string s; ret)
+        | Cat (f1, f2) -> ...
+
+wyświetla ". kotAla ma 3y" co jest błędne
+
+let printf fmt = kprintf fmt ()
+
+"Ala ma

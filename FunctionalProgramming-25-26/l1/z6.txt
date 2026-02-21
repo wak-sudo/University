@@ -1,0 +1,10 @@
+let ctrue = fun (x : 'a) (y : 'a) -> x
+let cfalse = fun (x : 'a) (y : 'a) -> y
+
+let bool_of_cbool (f: 'a -> 'a -> 'a) = (f true false)
+
+let cbool_of_bool x = if x == true then ctrue else cfalse 
+
+let cand (fst: 'a -> 'a -> 'a) (snd: 'a -> 'a -> 'a) = cbool_of_bool ((bool_of_cbool fst) && (bool_of_cbool snd))
+
+let cor (fst: 'a -> 'a -> 'a) (snd: 'a -> 'a -> 'a) = cbool_of_bool ((bool_of_cbool fst) || (bool_of_cbool snd))

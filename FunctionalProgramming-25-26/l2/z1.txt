@@ -1,0 +1,16 @@
+val fold_left : ('acc -> 'a -> 'acc) -> 'acc -> 'a list -> 'acc
+val fold_right : ('a -> 'acc -> 'acc) -> 'a list -> 'acc -> 'acc
+
+let lenght s = List.fold_left (fun acc _ -> acc + 1) 0 s
+
+let rev s = List.fold_left (fun x el -> el :: x) [] s
+
+let map f s = List.fold_right (fun el x -> (f el) :: x) s []
+
+let append s1 s2 = List.fold_right (fun el acc -> el :: acc) s1 s2
+
+let rev_append s1 s2 = List.fold_left (fun acc el -> el :: acc) s2 s1
+
+let rev_map f s = List.fold_left (fun acc el -> (f el) :: acc) [] s
+
+let filter f s = List.fold_right (fun el acc -> if (f el) then el :: acc else acc) s []

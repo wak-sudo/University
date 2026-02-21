@@ -1,0 +1,37 @@
+module IntKey = struct
+  type t = int
+  let compare = compare
+end
+
+module Perm = Make(IntKey)
+
+let () =
+  (* permutacje testowe *)
+  let id_perm = Perm.id in
+  let swap_1_2 = Perm.swap 1 2 in
+  let swap_2_3 = Perm.swap 2 3 in
+  let composed = Perm.compose swap_1_2 swap_2_3 in
+  let swap_inv = Perm.invert swap_1_2 in
+
+  (* lista testowanych kluczy *)
+  let keys = [1; 2; 3] in
+
+  (* test id *)
+  List.iter (fun k -> Printf.printf "id apply %d = %d\n" k (Perm.apply id_perm k)) keys;
+
+  (* test swap 1-2 *)
+  List.iter (fun k -> Printf.printf "swap 1-2 apply %d = %d\n" k (Perm.apply swap_1_2 k)) keys;
+
+  (* test invert swap 1-2 *)
+  List.iter (fun k -> Printf.printf "invert swap 1-2 apply %d = %d\n" k (Perm.apply swap_inv k)) keys;
+
+  (* test swap 2-3 *)
+  List.iter (fun k -> Printf.printf "swap 2-3 apply %d = %d\n" k (Perm.apply swap_2_3 k)) keys;
+
+  (* test composed *)
+  List.iter (fun k -> Printf.printf "composed apply %d = %d\n" k (Perm.apply composed k)) keys;
+
+  (* test compare *)
+  Printf.printf "compare swap_1_2 swap_2_3 = %d\n" (Perm.compare swap_1_2 swap_2_3);
+  Printf.printf "compare swap_1_2 swap_1_2 = %d\n" (Perm.compare swap_1_2 swap_1_2)
+

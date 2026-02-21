@@ -1,0 +1,7 @@
+fun x -> x  : 'a -> 'a = <fun>
+fun (x : int) -> x  :  int -> int = <fun>
+
+1. fun (f: 'a -> 'b) (g: 'c -> 'a) (x : 'c) -> f (g x)
+2. fun x y -> x
+3. fun (x : 'a) (y : 'a) -> y
+

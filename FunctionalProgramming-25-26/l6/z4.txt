@@ -1,0 +1,9 @@
+let rec fold_left_cps (f : 'a -> 'b -> ('a -> 'c) -> 'c) (acc : 'a) (xs : 'b list) (finFun : 'a -> 'c) : 'c =
+    match xs with
+    | [] -> finFun acc
+    | x :: xs -> f acc x (fun new_acc -> fold_left_cps f new_acc xs finFun)
+
+
+let fold_left (f: 'acc -> 'a -> 'acc) (acc : 'acc) (xs : 'a list) : 'acc =
+    let f_cps acc x g = g (f acc x) in
+    fold_left_cps subF acc xs (fun x -> x)

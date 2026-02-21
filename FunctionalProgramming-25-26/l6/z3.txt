@@ -1,0 +1,34 @@
+exception StopException
+
+let for_all pred xs  = 
+    let f acc x =
+        let newRes = acc && (pred x) in
+        if newRes = false then raise StopException
+        else true
+    in try
+        List.fold_left f true xs
+       with
+       | _ -> false
+
+let mult_list xs =
+    if xs = [] then 0 else 
+    let f acc x =
+        if x = 0 then raise StopException
+        else acc * x
+    in try
+       List.fold_left f 1 xs
+       with
+       | _ -> 0
+
+let sorted (xs : int list) = 
+    match xs with
+    | [] -> true
+    | [x] -> true
+    | x :: xs -> 
+        let f acc y =
+            if acc > y then raise StopException
+            else y
+        in try
+           List.fold_left f x xs; true
+           with
+           | _ -> false

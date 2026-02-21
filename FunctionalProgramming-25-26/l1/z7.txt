@@ -1,0 +1,15 @@
+let zero = fun (f: 'a -> 'a) (x : 'a) -> x 
+
+let succ (n: ('a -> 'a) -> 'a -> 'a) = fun (f : 'a -> 'a) (x : 'a) -> f (n f x)
+
+let rec cnum_of_int n = if n == 0 then zero else succ (cnum_of_int (n-1))
+
+let int_of_cnum (f: ('a -> 'a) -> 'a -> 'a) = f (fun x -> x + 1) 0
+
+let add fst snd = 
+    (cnum_of_int ((int_of_cnum fst) + (int_of_cnum snd)))
+
+let mul fst snd = 
+    (cnum_of_int ((int_of_cnum fst) * (int_of_cnum snd)))
+
+let is_zero n = cbool_of_bool ((int_of_cnum n) == 0)

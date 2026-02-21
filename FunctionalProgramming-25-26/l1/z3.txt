@@ -1,0 +1,22 @@
+let hd (s : int -> 'a) = s 0
+
+let tl (s : int -> 'a) =
+  fun n -> s (n + 1)
+
+let add (s : int -> int) (c : int) =
+  fun x -> (s x) + c
+
+let map (s : int -> 'a) (mapFun : 'a -> 'b) =
+  fun x -> (mapFun (s x))
+
+let map2 (s1 : int -> 'a) (s2 : int -> 'b) (mapFun : 'a -> 'b -> 'c ) =
+  fun x -> (mapFun (s1 x) (s2 x))
+
+let replace (s : int -> 'a) (n : int) (a : 'a) =
+  fun x -> (if x == n then a else (s x))
+
+let take_every (s : int -> 'a) (n : int) =
+  fun x -> s ((n * (x+1)) - 1)
+
+
+let myStream = fun x -> (x*x)+1

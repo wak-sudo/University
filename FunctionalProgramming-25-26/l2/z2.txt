@@ -1,0 +1,9 @@
+let rec sublists s =
+    match s with
+    | [] -> [[]]
+    | x :: xs ->
+        let crEl = List.hd s in
+        let smallerSubList = sublists (List.tl s) in
+        let currentResult = List.map (fun el -> crEl :: el) smallerSubList in
+        smallerSubList @ currentResult
+;;
